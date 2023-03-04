@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculate interest</title>
+  <!-- CSS styles -->
+  <style>
+    body {
+      margin: 1rem;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* table styles */
+    table {
+      width: 20%;
+    }
+
+    table,
+    tr,
+    th,
+    td {
+      /* have borders */
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+
+    /* first row styles */
+    th {
+      background-color: #01008C;
+      /* text color */
+      color: white;
+      text-align: left;
+      padding-left: 0.3rem;
+    }
+
+    /* alternate rows styles */
+    tr:nth-of-type(2n):not(tr:nth-of-type(1)) {
+      background-color: #ADD9E6;
+    }
+
+    /* caption styles */
+    caption {
+      font-weight: bold;
+    }
+
+    /* mouse hover styles */
+    table tr:hover {
+      background-color: teal !important;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- interest table will be created here -->
+  <div id="interestTable"></div>
+  <br><br>
+
+  <!-- link which refreshes the page on its click -->
+  <a href="#" id="retryLink">Retry the calculation process</a>
+
+  <!-- JavaScript code -->
+
+  <script>
+    // Run a function when user clicks on Retry the calculation process link to refresh the page
+    document.querySelector("#retryLink").addEventListener("click", refreshPage);
+
+    // take input from user for value of "number of years"
+    let years = prompt("Enter value of number of years");
+
+    // function to create the table
+    function createTable() {
+      // div element where table will be created
+      let interestTable = document.querySelector("#interestTable");
+      // create a new element <table>
+      let elementTable = document.createElement("table");
+      // create caption element
+      let captionEl = document.createElement("caption");
+      // insert text
+      captionEl.textContent = "Calculating Compound Interest"
+
+      // define principal, rate values
+      let p = 1000;
+      r = 0.05;  //Since, 5% = 5 / 100 = 0.05 
+
+      // create header row and insert text
+      let headerRow = document.createElement("tr");
+      let headerCell = document.createElement("th");
+      let headerCellSec = document.createElement("th");
+      headerCell.textContent = "Year";
+      headerRow.appendChild(headerCell);
+      headerCellSec.textContent = "Amount on deposit";
+      headerRow.appendChild(headerCellSec);
+      elementTable.appendChild(headerRow);
+
+      // append caption to table
+      elementTable.appendChild(captionEl);
+      // run a for loop to create table
+      for (let i = 0; i < years; i++) {
+        // create a row element <tr>
+        let rowElement = document.createElement("tr");
+        // run a for loop to create columns
+
+        // create a table data cell element <td>
+        let cellElement1 = document.createElement("td");
+        let cellElement2 = document.createElement("td");
+        // insert year values in cell
+        cellElement1.textContent = i + 1;
+        rowElement.appendChild(cellElement1);
+        // do calculation for interest value
+        //  Math.pow() calculates power and toFixed(2) fixes the result to 2 decimals
+        cellElement2.innerHTML = `${(p * Math.pow((1 + r), i + 1)).toFixed(2)}`;
+        // append cell to row
+        rowElement.appendChild(cellElement2);
+
+        // append row to table
+        elementTable.appendChild(rowElement); //appending each tr to table
+      }
+      // print created table
+      interestTable.innerHTML = elementTable.outerHTML;
+    }
+
+    // call the function to create the table for interest
+    createTable();
+
+    // function for refreshing the page 
+    function refreshPage() {
+      // reload the page
+      location.reload();
+    }
+
+    // run a function on double click of row
+    document.querySelector("tr").addEventListener('dblclick', function (e) {
+      //  select the clicked element
+      let textCopy = e.target || e.srcElement;
+      textCopy.select();
+      // copy the text
+      document.execCommand("copy");
+    });
+
+  </script>
+</body>
+
+</html>
